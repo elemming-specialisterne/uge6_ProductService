@@ -24,6 +24,7 @@ ProductService is a simple ASP.NET Core Web API for managing products in an inve
 - **.NET Version:** 8.0 (or latest installed)  
 - **Packages:**  
   - Swashbuckle.AspNetCore (Swagger/OpenAPI support)
+  - Xunit (Unit testing framework)
 
 ---
 
@@ -66,10 +67,20 @@ The API uses an **in-memory list** to simulate a database. Sample products inclu
 
 ---
 
-## 7. Improvement Suggestions (#TODO)
+## 7. Unit Tests
 
-- Integrate a **real database** (e.g., SQL Server or SQLite) instead of in-memory storage  
-- Add **Excel import functionality** for bulk product updates  
-- Implement **inventory adjustment on sales transactions**  
-- Add **unit and integration tests** to cover API endpoints  
-- Include **logging** for error tracking and debugging  
+The project includes separate test classes for each CRUD operation. Each test follows the **Arrange / Act / Assert** pattern.
+
+| Test Class | Test Method | Purpose | Arrange | Act | Assert |
+|------------|------------|---------|--------|-----|-------|
+| `ProductsController_GetTests` | `GetAll_ReturnsListOfProducts` | Ensure `GetAll` returns a non-empty list | Create controller | Call `GetAll()` | Result is `OkObjectResult` and list is not empty |
+| `ProductsController_GetTests` | `GetById_ExistingId_ReturnsProduct` | Ensure `GetById` returns the correct product | Create controller and product | Call `GetById(createdProduct.Id)` | Result is `OkObjectResult` and product matches |
+| `ProductsController_PostTests` | `Create_ValidProduct_ReturnsCreatedProduct` | Ensure `Create` adds a product | Create controller and new product | Call `Create(newProduct)` | Result is `CreatedAtActionResult` and product has Id assigned |
+| `ProductsController_PutTests` | `Update_ExistingProduct_UpdatesValuesCorrectly` | Ensure updating an existing product changes its properties | Create controller and add product | Call `Update(createdProduct.Id, updatedProduct)` | Result is `NoContentResult` and product values updated |
+| `ProductsController_PutTests` | `Update_NonExistingProduct_ReturnsNotFound` | Ensure updating a non-existing product returns NotFound | Create controller and fake product | Call `Update(999, nonExistingProduct)` | Result is `NotFoundResult` |
+| `ProductsController_DeleteTests` | `Delete_ExistingProduct_RemovesProduct` | Ensure deleting an existing product removes it | Create controller and product | Call `Delete(createdProduct.Id)` | Result is `NoContentResult` and product cannot be retrieved |
+| `ProductsController_DeleteTests` | `Delete_NonExistingProduct_ReturnsNotFound` | Ensure deleting a non-existing product returns NotFound | Create controller | Call `Delete(999)` | Result is `NotFoundResult` |
+
+> 💡 All tests are independent; each test creates its own product instances to avoid side effects.
+
+---
