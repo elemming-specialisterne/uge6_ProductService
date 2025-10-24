@@ -8,7 +8,7 @@ namespace ProductService.Controllers
     public class ProductsController : ControllerBase
     {
         // In-memory liste som "lager"
-        private static List<Product> products = new()
+        private List<Product> products = new()
         {
             new Product { Id = 1, Name = "Kaffe", Description = "Sort kaffe", Price = 25.50m, Inventory = 100, Category = "Drikkevarer", Supplier = "KaffeFirma", Barcode = "1234567890" },
             new Product { Id = 2, Name = "Brød", Description = "Franskbrød", Price = 15.00m, Inventory = 50, Category = "Mad", Supplier = "Bageren", Barcode = "0987654321" },
