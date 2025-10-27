@@ -2,7 +2,7 @@
 {
     public class Product
     {
-        public int Id { get; set; } // Unique product ID
+        public int ProductID { get; set; } // Unique product ID
         public string Name { get; set; } // Product name
         public string Description { get; set; } // Short description
         public decimal Price { get; set; } // Sale price

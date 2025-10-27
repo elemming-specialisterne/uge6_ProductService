@@ -21,7 +21,7 @@ namespace ProductService.Test
             // Assert: result is CreatedAtActionResult and product has Id assigned
             var createdResult = Assert.IsType<CreatedAtActionResult>(result.Result);
             var createdProduct = Assert.IsType<Product>(createdResult.Value);
-            Assert.True(createdProduct.Id > 0);
+            Assert.True(createdProduct.ProductID > 0);
             Assert.Equal("New Product", createdProduct.Name);
         }
     }

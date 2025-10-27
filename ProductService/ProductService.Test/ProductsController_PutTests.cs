@@ -19,7 +19,7 @@ namespace ProductService.Test
 
             var updatedProduct = new Product
             {
-                Id = createdProduct.Id,
+                ProductID = createdProduct.ProductID,
                 Name = "Coffee updated",
                 Description = "New description",
                 Price = 30.00m,
@@ -29,13 +29,13 @@ namespace ProductService.Test
             };
 
             // Act: call Update()
-            var updateResult = controller.Update(createdProduct.Id, updatedProduct);
+            var updateResult = controller.Update(createdProduct.ProductID, updatedProduct);
 
             // Assert: returns NoContentResult
             Assert.IsType<NoContentResult>(updateResult);
 
             // Assert: check that product values are updated
-            var getResult = controller.GetById(createdProduct.Id);
+            var getResult = controller.GetById(createdProduct.ProductID);
             var okResult = Assert.IsType<OkObjectResult>(getResult.Result);
             var productFromController = Assert.IsType<Product>(okResult.Value);
             Assert.Equal("Coffee updated", productFromController.Name);
@@ -50,7 +50,7 @@ namespace ProductService.Test
         {
             // Arrange: create controller and a fake product
             var controller = new ProductsController();
-            var nonExistingProduct = new Product { Id = 999, Name = "Fiction", Description = "Not found", Price = 99.99m };
+            var nonExistingProduct = new Product { ProductID = 999, Name = "Fiction", Description = "Not found", Price = 99.99m };
 
             // Act: call Update() with non-existing Id
             var result = controller.Update(999, nonExistingProduct);

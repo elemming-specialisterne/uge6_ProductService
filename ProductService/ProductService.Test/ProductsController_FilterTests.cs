@@ -16,9 +16,9 @@ namespace ProductService.Test
             // Arrange: create test products and controller instance
             var testProducts = new List<Product>
             {
-                new Product { Id = 1, Name = "Coffee", Category = "Drinks", Price = 25m },
-                new Product { Id = 2, Name = "Tea", Category = "Drinks", Price = 15m },
-                new Product { Id = 3, Name = "Cocoa milk", Category = "Drinks", Price = 18m }
+                new Product { ProductID = 1, Name = "Coffee", Category = "Drinks", Price = 25m },
+                new Product { ProductID = 2, Name = "Tea", Category = "Drinks", Price = 15m },
+                new Product { ProductID = 3, Name = "Cocoa milk", Category = "Drinks", Price = 18m }
             };
             var controller = new ProductsController(testProducts);
 
@@ -41,9 +41,9 @@ namespace ProductService.Test
             // Arrange: create test products and controller instance
             var testProducts = new List<Product>
             {
-                new Product { Id = 1, Name = "Coffee", Category = "Drinks", Price = 25m },
-                new Product { Id = 2, Name = "Tea", Category = "Drinks", Price = 15m },
-                new Product { Id = 3, Name = "Bread", Category = "Food", Price = 10m }
+                new Product { ProductID = 1, Name = "Coffee", Category = "Drinks", Price = 25m },
+                new Product { ProductID = 2, Name = "Tea", Category = "Drinks", Price = 15m },
+                new Product { ProductID = 3, Name = "Bread", Category = "Food", Price = 10m }
             };
             var controller = new ProductsController(testProducts);
 
@@ -65,9 +65,9 @@ namespace ProductService.Test
             // Arrange: create test products and controller instance
             var testProducts = new List<Product>
             {
-                new Product { Id = 1, Name = "Coffee", Category = "Drinks", Price = 25m },
-                new Product { Id = 2, Name = "Tea", Category = "Drinks", Price = 15m },
-                new Product { Id = 3, Name = "Bread", Category = "Food", Price = 10m }
+                new Product { ProductID = 1, Name = "Coffee", Category = "Drinks", Price = 25m },
+                new Product { ProductID = 2, Name = "Tea", Category = "Drinks", Price = 15m },
+                new Product { ProductID = 3, Name = "Bread", Category = "Food", Price = 10m }
             };
             var controller = new ProductsController(testProducts);
 
@@ -88,9 +88,9 @@ namespace ProductService.Test
             // Arrange: create test products and controller instance
             var testProducts = new List<Product>
             {
-                new Product { Id = 1, Name = "Coffee", Category = "Drinks", Price = 25m },
-                new Product { Id = 2, Name = "Tea", Category = "Drinks", Price = 15m },
-                new Product { Id = 3, Name = "Bread", Category = "Food", Price = 10m }
+                new Product { ProductID = 1, Name = "Coffee", Category = "Drinks", Price = 25m },
+                new Product { ProductID = 2, Name = "Tea", Category = "Drinks", Price = 15m },
+                new Product { ProductID = 3, Name = "Bread", Category = "Food", Price = 10m }
             };
             var controller = new ProductsController(testProducts);
 
@@ -111,9 +111,9 @@ namespace ProductService.Test
             // Arrange: create test products and controller instance
             var testProducts = new List<Product>
             {
-                new Product { Id = 1, Name = "Coffee", Category = "Drinks", Price = 25m },
-                new Product { Id = 2, Name = "Tea", Category = "Drinks", Price = 15m },
-                new Product { Id = 3, Name = "Bread", Category = "Food", Price = 10m }
+                new Product { ProductID = 1, Name = "Coffee", Category = "Drinks", Price = 25m },
+                new Product { ProductID = 2, Name = "Tea", Category = "Drinks", Price = 15m },
+                new Product { ProductID = 3, Name = "Bread", Category = "Food", Price = 10m }
             };
             var controller = new ProductsController(testProducts);
 

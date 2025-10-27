@@ -17,11 +17,11 @@ namespace ProductService.Test
             var createdProduct = Assert.IsType<Product>(((CreatedAtActionResult)createResult.Result).Value);
 
             // Act: call Delete()
-            var deleteResult = controller.Delete(createdProduct.Id);
+            var deleteResult = controller.Delete(createdProduct.ProductID);
 
             // Assert: returns NoContentResult and product is removed
             Assert.IsType<NoContentResult>(deleteResult);
-            var getResult = controller.GetById(createdProduct.Id);
+            var getResult = controller.GetById(createdProduct.ProductID);
             Assert.IsType<NotFoundResult>(getResult.Result);
         }
 

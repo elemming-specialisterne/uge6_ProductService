@@ -34,12 +34,12 @@ namespace ProductService.Test
             var createdProduct = Assert.IsType<Product>(((CreatedAtActionResult)createResult.Result).Value);
 
             // Act: call GetById() for the created product
-            var result = controller.GetById(createdProduct.Id);
+            var result = controller.GetById(createdProduct.ProductID);
 
             // Assert: result is OkObjectResult and product matches
             var okResult = Assert.IsType<OkObjectResult>(result.Result);
             var productFromController = Assert.IsType<Product>(okResult.Value);
-            Assert.Equal(createdProduct.Id, productFromController.Id);
+            Assert.Equal(createdProduct.ProductID, productFromController.ProductID);
         }
     }
 }
