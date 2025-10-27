@@ -13,7 +13,7 @@ namespace ProductService.Test
         {
             // Arrange: create controller and new product
             var controller = new ProductsController();
-            var newProduct = new Product { Name = "Ny Produkt", Description = "Beskrivelse", Price = 50m, Inventory = 20, Category = "Test", Supplier = "Unit", Barcode = "123" };
+            var newProduct = new Product { Name = "Ny Produkt", Description = "Beskrivelse", Price = 50m, Inventory = 20, Category = "Test" };
 
             // Act: call Create()
             var result = controller.Create(newProduct);

@@ -8,9 +8,6 @@
         public decimal Price { get; set; } // Sale price
         public int Inventory { get; set; } // Quantity in stock
         public string Category { get; set; } // E.g., Beverages, Food
-        public string Supplier { get; set; } // Supplier of the product
-        public string Barcode { get; set; } // Optional, for scanners
-        public DateTime CreatedDate { get; set; } = DateTime.Now; // Date the product was created
         public bool Active { get; set; } = true; // Whether the product is active/available
     }
 }

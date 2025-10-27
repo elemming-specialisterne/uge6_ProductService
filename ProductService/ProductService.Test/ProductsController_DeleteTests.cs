@@ -13,7 +13,7 @@ namespace ProductService.Test
         {
             // Arrange: create controller and a product
             var controller = new ProductsController();
-            var createResult = controller.Create(new Product { Name = "SletMig", Description = "Test", Price = 15m, Inventory = 10, Category = "Test", Supplier = "Unit", Barcode = "DEL1" });
+            var createResult = controller.Create(new Product { Name = "SletMig", Description = "Test", Price = 15m, Inventory = 10, Category = "Test" });
             var createdProduct = Assert.IsType<Product>(((CreatedAtActionResult)createResult.Result).Value);
 
             // Act: call Delete()

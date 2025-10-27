@@ -13,7 +13,7 @@ namespace ProductService.Test
         {
             // Arrange: create controller and add a product
             var controller = new ProductsController();
-            var product = new Product { Name = "Kaffe", Description = "Sort kaffe", Price = 25.50m, Inventory = 100, Category = "Drikkevarer", Supplier = "KaffeFirma", Barcode = "1234567890" };
+            var product = new Product { Name = "Kaffe", Description = "Sort kaffe", Price = 25.50m, Inventory = 100, Category = "Drikkevarer" };
             var createResult = controller.Create(product);
             var createdProduct = Assert.IsType<Product>(((CreatedAtActionResult)createResult.Result).Value);
 
@@ -25,8 +25,6 @@ namespace ProductService.Test
                 Price = 30.00m,
                 Inventory = 80,
                 Category = "Drikkevarer",
-                Supplier = "KaffeFirma",
-                Barcode = "1234567890",
                 Active = true
             };
 

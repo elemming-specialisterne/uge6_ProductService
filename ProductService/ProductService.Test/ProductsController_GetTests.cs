@@ -30,7 +30,7 @@ namespace ProductService.Test
         {
             // Arrange: create controller and a product
             var controller = new ProductsController();
-            var createResult = controller.Create(new Product { Name = "Test", Description = "Test", Price = 10m, Inventory = 5, Category = "Test", Supplier = "Unit", Barcode = "001" });
+            var createResult = controller.Create(new Product { Name = "Test", Description = "Test", Price = 10m, Inventory = 5, Category = "Test" });
             var createdProduct = Assert.IsType<Product>(((CreatedAtActionResult)createResult.Result).Value);
 
             // Act: call GetById() for the created product
