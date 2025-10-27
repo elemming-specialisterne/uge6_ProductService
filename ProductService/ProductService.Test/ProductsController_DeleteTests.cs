@@ -7,7 +7,7 @@ namespace ProductService.Test
 {
     public class ProductsController_DeleteTests
     {
-        // Test: DELETE existing product
+        // Test: Delete existing product
         [Fact]
         public void Delete_ExistingProduct_RemovesProduct()
         {
@@ -25,7 +25,7 @@ namespace ProductService.Test
             Assert.IsType<NotFoundResult>(getResult.Result);
         }
 
-        // Test: DELETE non-existing product
+        // Test: Delete non-existing product
         [Fact]
         public void Delete_NonExistingProduct_ReturnsNotFound()
         {

@@ -7,24 +7,24 @@ namespace ProductService.Test
 {
     public class ProductsController_PutTests
     {
-        // Test: PUT update existing product
+        // Test: Put update existing product
         [Fact]
         public void Update_ExistingProduct_UpdatesValuesCorrectly()
         {
             // Arrange: create controller and add a product
             var controller = new ProductsController();
-            var product = new Product { Name = "Kaffe", Description = "Sort kaffe", Price = 25.50m, Inventory = 100, Category = "Drikkevarer" };
+            var product = new Product { Name = "Coffee", Description = "Black coffee", Price = 25.50m, Inventory = 100, Category = "Drinks" };
             var createResult = controller.Create(product);
             var createdProduct = Assert.IsType<Product>(((CreatedAtActionResult)createResult.Result).Value);
 
             var updatedProduct = new Product
             {
                 Id = createdProduct.Id,
-                Name = "Kaffe Opdateret",
-                Description = "Ny beskrivelse",
+                Name = "Coffee updated",
+                Description = "New description",
                 Price = 30.00m,
                 Inventory = 80,
-                Category = "Drikkevarer",
+                Category = "Drinks",
                 Active = true
             };
 
@@ -38,19 +38,19 @@ namespace ProductService.Test
             var getResult = controller.GetById(createdProduct.Id);
             var okResult = Assert.IsType<OkObjectResult>(getResult.Result);
             var productFromController = Assert.IsType<Product>(okResult.Value);
-            Assert.Equal("Kaffe Opdateret", productFromController.Name);
-            Assert.Equal("Ny beskrivelse", productFromController.Description);
+            Assert.Equal("Coffee updated", productFromController.Name);
+            Assert.Equal("New description", productFromController.Description);
             Assert.Equal(30.00m, productFromController.Price);
             Assert.Equal(80, productFromController.Inventory);
         }
 
-        // Test: PUT update non-existing product
+        // Test: Put update non-existing product
         [Fact]
         public void Update_NonExistingProduct_ReturnsNotFound()
         {
             // Arrange: create controller and a fake product
             var controller = new ProductsController();
-            var nonExistingProduct = new Product { Id = 999, Name = "Fiktiv", Description = "Findes ikke", Price = 99.99m };
+            var nonExistingProduct = new Product { Id = 999, Name = "Fiction", Description = "Not found", Price = 99.99m };
 
             // Act: call Update() with non-existing Id
             var result = controller.Update(999, nonExistingProduct);

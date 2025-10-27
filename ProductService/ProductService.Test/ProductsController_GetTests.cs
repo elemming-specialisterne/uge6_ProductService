@@ -8,7 +8,7 @@ namespace ProductService.Test
 {
     public class ProductsController_GetTests
     {
-        // Test: GET all products
+        // Test: Get all products
         [Fact]
         public void GetAll_ReturnsListOfProducts()
         {
@@ -24,7 +24,7 @@ namespace ProductService.Test
             Assert.NotEmpty(products);
         }
 
-        // Test: GET product by ID
+        // Test: Get product by ID
         [Fact]
         public void GetById_ExistingId_ReturnsProduct()
         {

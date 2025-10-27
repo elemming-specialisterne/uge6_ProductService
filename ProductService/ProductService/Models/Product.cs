@@ -7,7 +7,7 @@
         public string Description { get; set; } // Short description
         public decimal Price { get; set; } // Sale price
         public int Inventory { get; set; } // Quantity in stock
-        public string Category { get; set; } // E.g., Beverages, Food
+        public string Category { get; set; } // E.g., Drinks, Food
         public bool Active { get; set; } = true; // Whether the product is active/available
     }
 }

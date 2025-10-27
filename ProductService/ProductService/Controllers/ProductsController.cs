@@ -14,16 +14,16 @@ namespace ProductService.Controllers
         {
             products = initialProducts ?? new List<Product>
             {
-                new Product { Id = 1, Name = "Kaffe", Description = "Sort kaffe", Price = 25.50m, Inventory = 100, Category = "Drikkevarer" },
-                new Product { Id = 2, Name = "Brød", Description = "Franskbrød", Price = 15.00m, Inventory = 50, Category = "Mad" },
-                new Product { Id = 3, Name = "Te", Description = "Grøn te", Price = 20.00m, Inventory = 80, Category = "Drikkevarer" },
-                new Product { Id = 4, Name = "Mælk", Description = "Letmælk 1L", Price = 10.50m, Inventory = 200, Category = "Mad" },
-                new Product { Id = 5, Name = "Smør", Description = "Økologisk smør 250g", Price = 18.75m, Inventory = 75, Category = "Mad" },
-                new Product { Id = 6, Name = "Æbler", Description = "Røde æbler, 1kg", Price = 22.00m, Inventory = 120, Category = "Frugt" },
-                new Product { Id = 7, Name = "Sodavand", Description = "Cola 0.5L", Price = 12.50m, Inventory = 150, Category = "Drikkevarer" },
-                new Product { Id = 8, Name = "Chokolade", Description = "Mørk chokolade 100g", Price = 14.00m, Inventory = 90, Category = "Slik" },
-                new Product { Id = 9, Name = "Pasta", Description = "Spaghetti 500g", Price = 13.50m, Inventory = 110, Category = "Mad" },
-                new Product { Id = 10, Name = "Ost", Description = "Cheddar 200g", Price = 24.00m, Inventory = 60, Category = "Mad" }
+                new Product { Id = 1, Name = "Coffee", Description = "Black coffee", Price = 25.50m, Inventory = 100, Category = "Drinks" },
+                new Product { Id = 2, Name = "Bread", Description = "White bread", Price = 15.00m, Inventory = 50, Category = "Food" },
+                new Product { Id = 3, Name = "Tea", Description = "Green tea", Price = 20.00m, Inventory = 80, Category = "Drinks" },
+                new Product { Id = 4, Name = "Milk", Description = "Low fat milk 1L", Price = 10.50m, Inventory = 200, Category = "Food" },
+                new Product { Id = 5, Name = "Butter", Description = "Organic butter 250g", Price = 18.75m, Inventory = 75, Category = "Food" },
+                new Product { Id = 6, Name = "Apples", Description = "Red apples, 1kg", Price = 22.00m, Inventory = 120, Category = "Fruit" },
+                new Product { Id = 7, Name = "Soda", Description = "Coca cola 0.5L", Price = 12.50m, Inventory = 150, Category = "Drinks" },
+                new Product { Id = 8, Name = "Chocolate", Description = "Dark chocolate 100g", Price = 14.00m, Inventory = 90, Category = "Candy" },
+                new Product { Id = 9, Name = "Pasta", Description = "Spaghetti 500g", Price = 13.50m, Inventory = 110, Category = "Food" },
+                new Product { Id = 10, Name = "Cheese", Description = "Cheddar 200g", Price = 24.00m, Inventory = 60, Category = "Food" }
             };
         }
 
@@ -34,11 +34,14 @@ namespace ProductService.Controllers
             return Ok(products);
         }
 
-        // GET: api/products/filter?category=Mad&minPrice=10&maxPrice=25
+        // GET: api/products/filter?category=Food&minPrice=10&maxPrice=25
         [HttpGet("filter")]
-        public ActionResult<IEnumerable<Product>> Filter([FromQuery] string? category, [FromQuery] decimal? minPrice, [FromQuery] decimal? maxPrice)
+        public ActionResult<IEnumerable<Product>> Filter([FromQuery] string? name, [FromQuery] string? category, [FromQuery] decimal? minPrice, [FromQuery] decimal? maxPrice)
         {
             var filtered = products.AsEnumerable();
+
+            if (!string.IsNullOrWhiteSpace(name)) 
+                filtered = filtered.Where(p => p.Name.Contains(name, StringComparison.OrdinalIgnoreCase));
 
             if (!string.IsNullOrWhiteSpace(category))
                 filtered = filtered.Where(p => p.Category.Equals(category, StringComparison.OrdinalIgnoreCase));
@@ -97,5 +100,6 @@ namespace ProductService.Controllers
             products.Remove(product);
             return NoContent();
         }
+
     }
 }
