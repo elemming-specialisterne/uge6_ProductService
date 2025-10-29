@@ -1,4 +1,13 @@
+using Microsoft.EntityFrameworkCore;
+using ProductService.Data;
+using ProductService.Repositories;
+
 var builder = WebApplication.CreateBuilder(args);
+
+builder.Services.AddDbContext<ProductDbContext>(options =>
+    options.UseSqlServer(builder.Configuration.GetConnectionString("DefaultConnection")));
+
+builder.Services.AddScoped<IProductRepository, ProductRepository>();
 
 builder.Services.AddControllers();
 builder.Services.AddEndpointsApiExplorer();
@@ -7,12 +16,11 @@ builder.Services.AddSwaggerGen();
 var app = builder.Build();
 
 // Activate Swagger always in all environments
-app.UseSwagger();
-app.UseSwaggerUI(c =>
+if (app.Environment.IsDevelopment())
 {
-    c.SwaggerEndpoint("/swagger/v1/swagger.json", "Product API V1");
-    c.RoutePrefix = string.Empty; // Swagger will appear on the root URL
-});
+    app.UseSwagger();
+    app.UseSwaggerUI();
+}
 
 app.UseHttpsRedirection();
 app.UseAuthorization();

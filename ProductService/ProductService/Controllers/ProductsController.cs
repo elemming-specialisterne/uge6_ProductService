@@ -1,5 +1,6 @@
 ﻿using Microsoft.AspNetCore.Mvc;
 using ProductService.Models;
+using ProductService.Repositories;
 
 namespace ProductService.Controllers
 {
@@ -7,99 +8,80 @@ namespace ProductService.Controllers
     [Route("api/[controller]")]
     public class ProductsController : ControllerBase
     {
-        private readonly List<Product> products;
+        private readonly IProductRepository _repository;
 
-        // Constructor that allows injecting test data
-        public ProductsController(List<Product>? initialProducts = null)
+        // Constructor injection of repository for decoupling and testability
+        public ProductsController(IProductRepository repository)
         {
-            products = initialProducts ?? new List<Product>
-            {
-                new Product { ProductID = 1, Name = "Coffee", Description = "Black coffee", Price = 25.50m, Inventory = 100, Category = "Drinks" },
-                new Product { ProductID = 2, Name = "Bread", Description = "White bread", Price = 15.00m, Inventory = 50, Category = "Food" },
-                new Product { ProductID = 3, Name = "Tea", Description = "Green tea", Price = 20.00m, Inventory = 80, Category = "Drinks" },
-                new Product { ProductID = 4, Name = "Milk", Description = "Low fat milk 1L", Price = 10.50m, Inventory = 200, Category = "Food" },
-                new Product { ProductID = 5, Name = "Butter", Description = "Organic butter 250g", Price = 18.75m, Inventory = 75, Category = "Food" },
-                new Product { ProductID = 6, Name = "Apples", Description = "Red apples, 1kg", Price = 22.00m, Inventory = 120, Category = "Fruit" },
-                new Product { ProductID = 7, Name = "Soda", Description = "Coca cola 0.5L", Price = 12.50m, Inventory = 150, Category = "Drinks" },
-                new Product { ProductID = 8, Name = "Chocolate", Description = "Dark chocolate 100g", Price = 14.00m, Inventory = 90, Category = "Candy" },
-                new Product { ProductID = 9, Name = "Pasta", Description = "Spaghetti 500g", Price = 13.50m, Inventory = 110, Category = "Food" },
-                new Product { ProductID = 10, Name = "Cheese", Description = "Cheddar 200g", Price = 24.00m, Inventory = 60, Category = "Food" }
-            };
+            _repository = repository;
         }
 
         // GET: api/products
+        // Returns all products
         [HttpGet]
-        public ActionResult<IEnumerable<Product>> GetAll()
+        public async Task<ActionResult<IEnumerable<Product>>> GetAll()
         {
+            var products = await _repository.GetAllAsync();
             return Ok(products);
         }
 
-        // GET: api/products/filter?category=Food&minPrice=10&maxPrice=25
+        // GET: api/products/filter
+        // Filters products based on optional query parameters: name, category, minPrice, maxPrice
         [HttpGet("filter")]
-        public ActionResult<IEnumerable<Product>> Filter([FromQuery] string? name, [FromQuery] string? category, [FromQuery] decimal? minPrice, [FromQuery] decimal? maxPrice)
+        public async Task<ActionResult<IEnumerable<Product>>> Filter(
+            [FromQuery] string? name,
+            [FromQuery] string? category,
+            [FromQuery] decimal? minPrice,
+            [FromQuery] decimal? maxPrice)
         {
-            var filtered = products.AsEnumerable();
-
-            if (!string.IsNullOrWhiteSpace(name)) 
-                filtered = filtered.Where(p => p.Name.Contains(name, StringComparison.OrdinalIgnoreCase));
-
-            if (!string.IsNullOrWhiteSpace(category))
-                filtered = filtered.Where(p => p.Category.Equals(category, StringComparison.OrdinalIgnoreCase));
-
-            if (minPrice.HasValue)
-                filtered = filtered.Where(p => p.Price >= minPrice.Value);
-
-            if (maxPrice.HasValue)
-                filtered = filtered.Where(p => p.Price <= maxPrice.Value);
-
-            return Ok(filtered);
+            var products = await _repository.FilterAsync(name, category, minPrice, maxPrice);
+            return Ok(products);
         }
 
         // GET: api/products/{id}
+        // Returns a single product by ID, or 404 if not found
         [HttpGet("{id}")]
-        public ActionResult<Product> GetById(int id)
+        public async Task<ActionResult<Product>> GetById(int id)
         {
-            var product = products.FirstOrDefault(p => p.ProductID == id);
+            var product = await _repository.GetByIdAsync(id);
             if (product == null) return NotFound();
             return Ok(product);
         }
 
         // POST: api/products
+        // Creates a new product; returns 400 if the model is invalid
         [HttpPost]
-        public ActionResult<Product> Create(Product newProduct)
+        public async Task<ActionResult<Product>> Create(Product newProduct)
         {
-            newProduct.ProductID = products.Any() ? products.Max(p => p.ProductID) + 1 : 1;
-            products.Add(newProduct);
-            return CreatedAtAction(nameof(GetById), new { id = newProduct.ProductID }, newProduct);
+            if (!ModelState.IsValid)
+                return BadRequest(ModelState);
+
+            var product = await _repository.AddAsync(newProduct);
+            return CreatedAtAction(nameof(GetById), new { id = product.ProductID }, product);
         }
 
         // PUT: api/products/{id}
+        // Updates an existing product; returns 400 if ID mismatch or model invalid
         [HttpPut("{id}")]
-        public IActionResult Update(int id, Product updatedProduct)
+        public async Task<IActionResult> Update(int id, Product updatedProduct)
         {
-            var product = products.FirstOrDefault(p => p.ProductID == id);
-            if (product == null) return NotFound();
+            if (!ModelState.IsValid)
+                return BadRequest(ModelState);
 
-            product.Name = updatedProduct.Name;
-            product.Description = updatedProduct.Description;
-            product.Price = updatedProduct.Price;
-            product.Inventory = updatedProduct.Inventory;
-            product.Category = updatedProduct.Category;
-            product.Active = updatedProduct.Active;
+            if (id != updatedProduct.ProductID)
+                return BadRequest();
 
+            await _repository.UpdateAsync(updatedProduct);
             return NoContent();
         }
 
         // DELETE: api/products/{id}
+        // Deletes a product by ID
         [HttpDelete("{id}")]
-        public IActionResult Delete(int id)
+        public async Task<IActionResult> Delete(int id)
         {
-            var product = products.FirstOrDefault(p => p.ProductID == id);
-            if (product == null) return NotFound();
-
-            products.Remove(product);
+            await _repository.DeleteAsync(id);
             return NoContent();
         }
-
     }
 }
