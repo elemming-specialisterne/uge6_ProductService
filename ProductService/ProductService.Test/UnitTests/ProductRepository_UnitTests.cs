@@ -14,11 +14,11 @@ namespace ProductService.Test.UnitTests
         // Creates a new in-memory database for each test
         private ProductRepository CreateRepository(string dbName)
         {
-            var options = new DbContextOptionsBuilder<ProductDbContext>()
+            var options = new DbContextOptionsBuilder<ProductContext>()
                 .UseInMemoryDatabase(databaseName: dbName)
                 .Options;
 
-            var context = new ProductDbContext(options);
+            var context = new ProductContext(options);
             return new ProductRepository(context);
         }
 
@@ -28,9 +28,9 @@ namespace ProductService.Test.UnitTests
             // Arrange – add multiple products to the in-memory database
             var repository = CreateRepository(nameof(GetAllAsync_ReturnsAllProducts));
 
-            await repository.AddAsync(new Product { Name = "Coffee", Category = "Drinks", Description = "Hot drink", Price = 25m });
-            await repository.AddAsync(new Product { Name = "Tea", Category = "Drinks", Description = "Hot drink", Price = 15m });
-            await repository.AddAsync(new Product { Name = "Bread", Category = "Food", Description = "Bakery", Price = 10m });
+            await repository.AddAsync(new Product { Name = "Coffee", Description = "Hot drink", Price = 25m });
+            await repository.AddAsync(new Product { Name = "Tea", Description = "Hot drink", Price = 15m });
+            await repository.AddAsync(new Product { Name = "Bread", Description = "Bakery", Price = 10m });
 
             // Act – retrieve all products
             var result = await repository.GetAllAsync();
@@ -44,10 +44,10 @@ namespace ProductService.Test.UnitTests
         {
             // Arrange – add one product
             var repository = CreateRepository(nameof(GetByIdAsync_ReturnsCorrectProduct));
-            var product = await repository.AddAsync(new Product { Name = "Coffee", Category = "Drinks", Description = "Hot drink", Price = 25m });
+            var product = await repository.AddAsync(new Product { Name = "Coffee", Description = "Hot drink", Price = 25m });
 
             // Act – get it by ID
-            var found = await repository.GetByIdAsync(product.ProductID);
+            var found = await repository.GetByIdAsync(product.Productid);
 
             // Assert – verify that the product is found and matches
             Assert.NotNull(found);
@@ -62,11 +62,8 @@ namespace ProductService.Test.UnitTests
             var newProduct = new Product
             {
                 Name = "Coffee",
-                Category = "Drinks",
                 Description = "Black coffee",
-                Price = 25m,
-                Inventory = 10,
-                Active = true
+                Price = 25m
             };
 
             // Act – add product to database
@@ -86,7 +83,6 @@ namespace ProductService.Test.UnitTests
             var product = await repository.AddAsync(new Product
             {
                 Name = "Coffee",
-                Category = "Drinks",
                 Description = "Hot drink",
                 Price = 25m
             });
@@ -94,7 +90,7 @@ namespace ProductService.Test.UnitTests
             // Act – change the price and update
             product.Price = 30m;
             await repository.UpdateAsync(product);
-            var updated = await repository.GetByIdAsync(product.ProductID);
+            var updated = await repository.GetByIdAsync(product.Productid);
 
             // Assert – confirm the price is updated
             Assert.Equal(30m, updated!.Price);
@@ -108,13 +104,12 @@ namespace ProductService.Test.UnitTests
             var product = await repository.AddAsync(new Product
             {
                 Name = "Coffee",
-                Category = "Drinks",
                 Description = "Hot drink",
                 Price = 25m
             });
 
             // Act – delete the product by ID
-            await repository.DeleteAsync(product.ProductID);
+            await repository.DeleteAsync(product.Productid);
             var all = await repository.GetAllAsync();
 
             // Assert – ensure the product was deleted
@@ -129,20 +124,18 @@ namespace ProductService.Test.UnitTests
 
             var products = new List<Product>
             {
-                new Product { Name = "Coffee", Category = "Drinks", Description = "Black coffee", Price = 25m },
-                new Product { Name = "Tea", Category = "Drinks", Description = "Green tea", Price = 15m },
-                new Product { Name = "Bread", Category = "Food", Description = "Wheat bread", Price = 10m }
+                new Product { Name = "Coffee", Description = "Black coffee", Price = 25m },
+                new Product { Name = "Tea", Description = "Green tea", Price = 15m }
             };
 
             foreach (var p in products)
                 await repository.AddAsync(p);
 
             // Act – filter only drinks between 10 and 25 DKK
-            var result = await repository.FilterAsync(null, "Drinks", 10, 25);
+            var result = await repository.FilterAsync(null, 10, 25);
 
             // Assert – should return exactly 2 drinks
             Assert.Equal(2, result.Count());
-            Assert.All(result, p => Assert.Equal("Drinks", p.Category));
         }
     }
 }

@@ -23,13 +23,13 @@ namespace ProductService.Repositories
             return await _context.Products.ToListAsync();
         }
 
-        public async Task<Product?> GetByIdAsync(int id)
+        public async Task<Product?> GetByIdAsync(long id)
         {
             // Finds a product by primary key asynchronously
             return await _context.Products.FindAsync(id);
         }
 
-        public async Task<IEnumerable<Product>> FilterAsync(string? name, string? category, decimal? minPrice, decimal? maxPrice)
+        public async Task<IEnumerable<Product>> FilterAsync(string? name, decimal? minPrice, decimal? maxPrice)
         {
             // Start building queryable collection
             var query = _context.Products.AsQueryable();
@@ -65,7 +65,7 @@ namespace ProductService.Repositories
             await _context.SaveChangesAsync();
         }
 
-        public async Task DeleteAsync(int id)
+        public async Task DeleteAsync(long id)
         {
             // Find product by ID
             var product = await _context.Products.FindAsync(id);

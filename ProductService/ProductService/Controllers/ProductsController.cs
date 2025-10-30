@@ -32,11 +32,10 @@ namespace ProductService.Controllers
         [HttpGet("filter")]
         public async Task<ActionResult<IEnumerable<Product>>> Filter(
             [FromQuery] string? name,
-            [FromQuery] string? category,
             [FromQuery] decimal? minPrice,
             [FromQuery] decimal? maxPrice)
         {
-            var products = await _repository.FilterAsync(name, category, minPrice, maxPrice);
+            var products = await _repository.FilterAsync(name, minPrice, maxPrice);
             return Ok(products);
         }
 

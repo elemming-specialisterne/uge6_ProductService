@@ -10,10 +10,10 @@ namespace ProductService.Repositories
         Task<IEnumerable<Product>> GetAllAsync();
 
         // Returns a single product by ID, or null if not found
-        Task<Product?> GetByIdAsync(int id);
+        Task<Product?> GetByIdAsync(long id);
 
         // Filters products based on optional parameters
-        Task<IEnumerable<Product>> FilterAsync(string? name, string? category, decimal? minPrice, decimal? maxPrice);
+        Task<IEnumerable<Product>> FilterAsync(string? name, decimal? minPrice, decimal? maxPrice);
 
         // Adds a new product to the database
         Task<Product> AddAsync(Product product);
@@ -22,6 +22,6 @@ namespace ProductService.Repositories
         Task UpdateAsync(Product product);
 
         // Deletes a product by ID; does nothing if product not found
-        Task DeleteAsync(int id);
+        Task DeleteAsync(long id);
     }
 }

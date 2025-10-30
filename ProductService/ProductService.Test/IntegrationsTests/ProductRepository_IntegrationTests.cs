@@ -12,13 +12,13 @@ namespace ProductService.Test.IntegrationTests
     public class ProductRepository_IntegrationTests
     {
         // Helper to create a new in-memory DbContext for each test to ensure isolation
-        private ProductDbContext GetInMemoryDbContext()
+        private ProductContext GetInMemoryDbContext()
         {
-            var options = new DbContextOptionsBuilder<ProductDbContext>()
+            var options = new DbContextOptionsBuilder<ProductContext>()
                 .UseInMemoryDatabase(databaseName: $"TestDb_{System.Guid.NewGuid()}")
                 .Options;
 
-            return new ProductDbContext(options);
+            return new ProductContext(options);
         }
 
         [Fact]
@@ -30,8 +30,8 @@ namespace ProductService.Test.IntegrationTests
 
             var products = new List<Product>
             {
-                new Product { Name = "Coffee", Category = "Drinks", Price = 25m, Inventory = 10, Description = "Black coffee", Active = true },
-                new Product { Name = "Tea", Category = "Drinks", Price = 15m, Inventory = 5, Description = "Green tea", Active = true }
+                new Product { Name = "Coffee", Price = 25m, Description = "Black coffee" },
+                new Product { Name = "Tea", Price = 15m, Description = "Green tea" }
             };
             context.Products.AddRange(products);
             await context.SaveChangesAsync();
@@ -53,11 +53,8 @@ namespace ProductService.Test.IntegrationTests
             var newProduct = new Product
             {
                 Name = "Coffee",
-                Category = "Drinks",
                 Price = 25m,
-                Inventory = 10,
                 Description = "Black coffee",
-                Active = true
             };
 
             // Act: add product and retrieve all products
@@ -79,17 +76,14 @@ namespace ProductService.Test.IntegrationTests
             var product = new Product
             {
                 Name = "Tea",
-                Category = "Drinks",
                 Price = 15m,
-                Inventory = 5,
                 Description = "Green tea",
-                Active = true
             };
             context.Products.Add(product);
             await context.SaveChangesAsync();
 
             // Act: get product by ID
-            var result = await repository.GetByIdAsync(product.ProductID);
+            var result = await repository.GetByIdAsync(product.Productid);
 
             // Assert: verify the correct product is returned
             Assert.NotNull(result);
@@ -105,15 +99,15 @@ namespace ProductService.Test.IntegrationTests
 
             var products = new List<Product>
             {
-                new Product { Name = "Coffee", Category = "Drinks", Price = 25m, Inventory = 10, Description = "Black coffee", Active = true },
-                new Product { Name = "Tea", Category = "Drinks", Price = 15m, Inventory = 5, Description = "Green tea", Active = true },
-                new Product { Name = "Bread", Category = "Food", Price = 10m, Inventory = 20, Description = "Whole grain", Active = true }
+                new Product { Name = "Coffee", Price = 25m, Description = "Black coffee" },
+                new Product { Name = "Tea", Price = 15m, Description = "Green tea" },
+                new Product { Name = "Bread", Price = 10m, Description = "Whole grain" }
             };
             context.Products.AddRange(products);
             await context.SaveChangesAsync();
 
             // Act: filter products by category "Drinks" and minPrice 20
-            var filtered = await repository.FilterAsync(null, "Drinks", 20, null);
+            var filtered = await repository.FilterAsync(null, 20, null);
 
             // Assert: only the matching product should be returned
             Assert.Single(filtered);
@@ -130,11 +124,8 @@ namespace ProductService.Test.IntegrationTests
             var product = new Product
             {
                 Name = "Coffee",
-                Category = "Drinks",
                 Price = 25m,
-                Inventory = 10,
                 Description = "Black coffee",
-                Active = true
             };
             context.Products.Add(product);
             await context.SaveChangesAsync();
@@ -144,7 +135,7 @@ namespace ProductService.Test.IntegrationTests
 
             // Act: update product in database
             await repository.UpdateAsync(product);
-            var updated = await repository.GetByIdAsync(product.ProductID);
+            var updated = await repository.GetByIdAsync(product.Productid);
 
             // Assert: verify that product was updated
             Assert.NotNull(updated);
@@ -161,17 +152,14 @@ namespace ProductService.Test.IntegrationTests
             var product = new Product
             {
                 Name = "Coffee",
-                Category = "Drinks",
                 Price = 25m,
-                Inventory = 10,
                 Description = "Black coffee",
-                Active = true
             };
             context.Products.Add(product);
             await context.SaveChangesAsync();
 
             // Act: delete the product
-            await repository.DeleteAsync(product.ProductID);
+            await repository.DeleteAsync(product.Productid);
             var allProducts = await repository.GetAllAsync();
 
             // Assert: product list should be empty

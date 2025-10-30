@@ -19,8 +19,8 @@ namespace ProductService.Test.UnitTests
             var mockRepo = new Mock<IProductRepository>();
             var testProducts = new List<Product>
             {
-                new Product { ProductID = 1, Name = "Coffee", Category = "Drinks", Price = 25m },
-                new Product { ProductID = 2, Name = "Tea", Category = "Drinks", Price = 15m }
+                new Product { Productid = 1, Name = "Coffee", Price = 25m },
+                new Product { Productid = 2, Name = "Tea", Price = 15m }
             };
             mockRepo.Setup(r => r.GetAllAsync()).ReturnsAsync(testProducts);
 
@@ -40,7 +40,7 @@ namespace ProductService.Test.UnitTests
         {
             // Arrange: mock repository to return a specific product
             var mockRepo = new Mock<IProductRepository>();
-            var product = new Product { ProductID = 1, Name = "Coffee", Category = "Drinks", Price = 25m };
+            var product = new Product { Productid = 1, Name = "Coffee", Price = 25m };
             mockRepo.Setup(r => r.GetByIdAsync(1)).ReturnsAsync(product);
 
             var controller = new ProductsController(mockRepo.Object);
@@ -51,7 +51,7 @@ namespace ProductService.Test.UnitTests
             // Assert: returns OkObjectResult with the expected product
             var okResult = Assert.IsType<OkObjectResult>(result.Result);
             var returnedProduct = Assert.IsType<Product>(okResult.Value);
-            Assert.Equal(product.ProductID, returnedProduct.ProductID);
+            Assert.Equal(product.Productid, returnedProduct.Productid);
         }
 
         [Fact]

@@ -17,13 +17,10 @@ namespace ProductService.Test.UnitTests
             var mockRepo = new Mock<IProductRepository>();
             var updatedProduct = new Product
             {
-                ProductID = 1,
+                Productid = 1,
                 Name = "Updated Coffee",
                 Description = "Updated description",
-                Price = 30m,
-                Inventory = 80,
-                Category = "Drinks",
-                Active = true
+                Price = 30m
             };
             mockRepo.Setup(r => r.UpdateAsync(updatedProduct)).Returns(Task.CompletedTask);
 
@@ -43,7 +40,7 @@ namespace ProductService.Test.UnitTests
             var mockRepo = new Mock<IProductRepository>();
             var updatedProduct = new Product
             {
-                ProductID = 2,
+                Productid = 2,
                 Name = "Coffee",
                 Description = "Test",
                 Price = 25m

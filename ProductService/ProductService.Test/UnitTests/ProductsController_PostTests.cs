@@ -17,12 +17,10 @@ namespace ProductService.Test.UnitTests
             var mockRepo = new Mock<IProductRepository>();
             var newProduct = new Product
             {
-                ProductID = 1,
+                Productid = 1,
                 Name = "New Product",
                 Description = "Description",
                 Price = 50m,
-                Inventory = 20,
-                Category = "Test"
             };
             mockRepo.Setup(r => r.AddAsync(It.IsAny<Product>())).ReturnsAsync(newProduct);
 
@@ -34,7 +32,7 @@ namespace ProductService.Test.UnitTests
             // Assert: returns CreatedAtActionResult with created product
             var createdResult = Assert.IsType<CreatedAtActionResult>(result.Result);
             var returnedProduct = Assert.IsType<Product>(createdResult.Value);
-            Assert.Equal(newProduct.ProductID, returnedProduct.ProductID);
+            Assert.Equal(newProduct.Productid, returnedProduct.Productid);
             Assert.Equal("New Product", returnedProduct.Name);
         }
 
