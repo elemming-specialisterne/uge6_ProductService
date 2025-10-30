@@ -30,6 +30,7 @@ namespace ProductService.Controllers
         // GET: api/products/filter
         // Filters products based on optional query parameters: name, category, minPrice, maxPrice
         [HttpGet("filter")]
+        [Authorize(Roles = "Admin")]
         public async Task<ActionResult<IEnumerable<Product>>> Filter(
             [FromQuery] string? name,
             [FromQuery] decimal? minPrice,
@@ -42,6 +43,7 @@ namespace ProductService.Controllers
         // GET: api/products/{id}
         // Returns a single product by ID, or 404 if not found
         [HttpGet("{id}")]
+        [Authorize(Roles = "Admin")]
         public async Task<ActionResult<Product>> GetById(int id)
         {
             var product = await _repository.GetByIdAsync(id);
@@ -52,6 +54,7 @@ namespace ProductService.Controllers
         // POST: api/products
         // Creates a new product; returns 400 if the model is invalid
         [HttpPost]
+        [Authorize(Roles = "Admin")]
         public async Task<ActionResult<Product>> Create(Product newProduct)
         {
             if (!ModelState.IsValid)
@@ -64,6 +67,7 @@ namespace ProductService.Controllers
         // PUT: api/products/{id}
         // Updates an existing product; returns 400 if ID mismatch or model invalid
         [HttpPut("{id}")]
+        [Authorize(Roles = "Admin")]
         public async Task<IActionResult> Update(int id, Product updatedProduct)
         {
             if (!ModelState.IsValid)
@@ -79,6 +83,7 @@ namespace ProductService.Controllers
         // DELETE: api/products/{id}
         // Deletes a product by ID
         [HttpDelete("{id}")]
+        [Authorize(Roles = "Admin")]
         public async Task<IActionResult> Delete(int id)
         {
             await _repository.DeleteAsync(id);
