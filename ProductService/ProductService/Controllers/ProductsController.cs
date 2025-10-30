@@ -1,4 +1,5 @@
-﻿using Microsoft.AspNetCore.Mvc;
+﻿using Microsoft.AspNetCore.Authorization;
+using Microsoft.AspNetCore.Mvc;
 using ProductService.Models;
 using ProductService.Repositories;
 
@@ -19,6 +20,7 @@ namespace ProductService.Controllers
         // GET: api/products
         // Returns all products
         [HttpGet]
+        [Authorize(Roles = "Admin")]
         public async Task<ActionResult<IEnumerable<Product>>> GetAll()
         {
             var products = await _repository.GetAllAsync();
@@ -57,7 +59,7 @@ namespace ProductService.Controllers
                 return BadRequest(ModelState);
 
             var product = await _repository.AddAsync(newProduct);
-            return CreatedAtAction(nameof(GetById), new { id = product.ProductID }, product);
+            return CreatedAtAction(nameof(GetById), new { id = product.Productid }, product);
         }
 
         // PUT: api/products/{id}
@@ -68,7 +70,7 @@ namespace ProductService.Controllers
             if (!ModelState.IsValid)
                 return BadRequest(ModelState);
 
-            if (id != updatedProduct.ProductID)
+            if (id != updatedProduct.Productid)
                 return BadRequest();
 
             await _repository.UpdateAsync(updatedProduct);

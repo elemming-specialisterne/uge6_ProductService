@@ -9,10 +9,10 @@ namespace ProductService.Repositories
 {
     public class ProductRepository : IProductRepository
     {
-        private readonly ProductDbContext _context;
+        private readonly ProductContext _context;
 
         // Constructor: injects the DbContext
-        public ProductRepository(ProductDbContext context)
+        public ProductRepository(ProductContext context)
         {
             _context = context;
         }
@@ -37,10 +37,6 @@ namespace ProductService.Repositories
             // Apply name filter if provided
             if (!string.IsNullOrWhiteSpace(name))
                 query = query.Where(p => p.Name.Contains(name));
-
-            // Apply category filter if provided
-            if (!string.IsNullOrWhiteSpace(category))
-                query = query.Where(p => p.Category == category);
 
             // Apply minimum price filter if provided
             if (minPrice.HasValue)
