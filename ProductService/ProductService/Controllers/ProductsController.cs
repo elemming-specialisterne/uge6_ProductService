@@ -20,7 +20,6 @@ namespace ProductService.Controllers
         // GET: api/products
         // Returns all products
         [HttpGet]
-        [Authorize(Roles = "Admin")]
         public async Task<ActionResult<IEnumerable<Product>>> GetAll()
         {
             var products = await _repository.GetAllAsync();
