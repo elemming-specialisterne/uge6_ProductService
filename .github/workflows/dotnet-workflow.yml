@@ -22,10 +22,10 @@ jobs:
         run: dotnet restore
 
       - name: Build
-        run: dotnet build --no-restore --configuration Release
+        run: dotnet build src/ProductService.sln --no-restore --configuration Release
 
       - name: Run tests
-        run: dotnet test --no-build --configuration Release --verbosity normal
+        run: dotnet test src/ProductService.sln --no-build --configuration Release --verbosity normal
 
   docker-deploy:
     needs: build-and-test  # Kører kun hvis build og tests lykkes
