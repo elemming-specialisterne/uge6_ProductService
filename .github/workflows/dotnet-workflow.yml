@@ -12,7 +12,7 @@ jobs:
 
     defaults: 
       run:
-        working-directory: ProductService.sln
+        working-directory: ProductService
 
     steps:
       - uses: actions/checkout@v3
@@ -23,13 +23,13 @@ jobs:
           dotnet-version: 7.0
 
       - name: Restore dependencies
-        run: dotnet restore
+        run: dotnet restore ProductService.sln
 
       - name: Build
-        run: dotnet build --no-restore --configuration Release
+        run: dotnet build ProductService.sln --no-restore --configuration Release
 
       - name: Run tests
-        run: dotnet test --no-build --configuration Release --verbosity normal
+        run: dotnet test ProductService.sln --no-build --configuration Release --verbosity normal
 
   docker-deploy:
     needs: build-and-test  # Kører kun hvis build og tests lykkes
